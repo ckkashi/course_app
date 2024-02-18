@@ -1,3 +1,4 @@
+import 'package:course_app/utils/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

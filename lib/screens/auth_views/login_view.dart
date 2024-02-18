@@ -7,7 +7,7 @@ import 'package:course_app/utils/strings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -21,73 +21,72 @@ class _LoginViewState extends State<LoginView> {
   final passwordController = TextEditingController(text: '42372Kash43');
   FocusNode emailFocus = FocusNode();
   FocusNode passFocus = FocusNode();
-
+  final firebase_controller = Get.find<FirebaseController>();
   @override
   Widget build(BuildContext context) {
-    final firebaseController = Provider.of<FirebaseController>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
-    return Consumer<FirebaseController>(builder: (context, value, _) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                // const Spacer(),
-                Text(
-                  login_string,
-                  style: textTheme.displaySmall!.copyWith(
-                      color: primary_color, fontWeight: FontWeight.w600),
-                ),
-                FormTextField(
-                  emailController: emailController,
-                  emailFocus: emailFocus,
-                  name: 'Email',
-                  password: false,
-                ),
-                FormTextField(
-                  emailController: passwordController,
-                  emailFocus: passFocus,
-                  name: 'Password',
-                  password: true,
-                ),
-                RoundButton(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              // const Spacer(),
+              Text(
+                login_string,
+                style: textTheme.displaySmall!.copyWith(
+                    color: primary_color, fontWeight: FontWeight.w600),
+              ),
+              FormTextField(
+                emailController: emailController,
+                emailFocus: emailFocus,
+                name: 'Email',
+                password: false,
+              ),
+              FormTextField(
+                emailController: passwordController,
+                emailFocus: passFocus,
+                name: 'Password',
+                password: true,
+              ),
+              Obx(() {
+                return RoundButton(
                     title: login_string,
-                    loading: value.loginLoading,
+                    loading: firebase_controller.loginLoading,
                     onPressed: () {
-                      value.loginAccount(emailController.text,
+                      firebase_controller.loginAccount(emailController.text,
                           passwordController.text, context);
-                    }),
-                const SizedBox(
-                  height: 10,
-                ),
-                // Spacer(),
-                RichText(
-                    text: TextSpan(
-                        text: 'Don\'t have an account? ',
-                        style: textTheme.titleMedium,
-                        children: [
-                      TextSpan(
-                          text: 'Register',
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const RegisterView(),
-                                  ));
-                            })
-                    ])),
-              ],
-            ),
+                    });
+              }),
+              const SizedBox(
+                height: 10,
+              ),
+              // Spacer(),
+              RichText(
+                  text: TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: textTheme.titleMedium,
+                      children: [
+                    TextSpan(
+                        text: 'Register',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RegisterView(),
+                                ));
+                          })
+                  ])),
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

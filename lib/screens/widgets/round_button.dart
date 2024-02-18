@@ -27,6 +27,8 @@ class RoundButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
             ),
           ),
+          backgroundColor: MaterialStatePropertyAll(primary_color),
+          foregroundColor: MaterialStatePropertyAll(bg_color),
         ),
         onPressed: onPressed,
         child: loading

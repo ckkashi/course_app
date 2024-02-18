@@ -1,11 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:course_app/controllers/firebase_controller.dart';
 import 'package:course_app/controllers/home_screen_controller.dart';
 import 'package:course_app/screens/navigations_views/account_nav_view.dart';
 import 'package:course_app/screens/navigations_views/explore_nav_view.dart';
 import 'package:course_app/screens/navigations_views/learn_nav_view.dart';
+import 'package:course_app/utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   static const page_id = '/HomeScreen';
@@ -20,17 +23,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    final firebaseController =
-        Provider.of<FirebaseController>(context, listen: false);
-    firebaseController.loggedinUser();
+    // final firebaseController =
+    //     Provider.of<FirebaseController>(context, listen: false);
+    // firebaseController.loggedinUser();
   }
+
+  final home_controller = Get.put(HomeScreenController());
+  final firebase_controller = Get.put(FirebaseController());
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeScreenController>(builder: (context, value, child) {
+    return Obx(() {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Course App'),
+          title: const Text(
+            app_name_string,
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -41,15 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.person), label: 'Account'),
           ],
-          currentIndex: value.selectedIndex,
-          onTap: (val) => value.chngSelectedIndex(val),
+          currentIndex: home_controller.selectedIndex,
+          onTap: (val) => home_controller.chngSelectedIndex(val),
         ),
         body: SafeArea(
             child: IndexedStack(
-          index: value.selectedIndex,
-          children: const [
-            ExploreNavView(),
-            LearnNavView(),
+          index: home_controller.selectedIndex,
+          children: [
+            const ExploreNavView(),
+            const LearnNavView(),
             AccountNavView(),
           ],
         )),

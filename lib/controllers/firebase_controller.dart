@@ -1,21 +1,37 @@
 // ignore_for_file: use_build_context_synchronously, prefer_typing_uninitialized_variables
 
+import 'package:course_app/models/user_model.dart';
+import 'package:course_app/screens/auth_views/edit_profile_view.dart';
 import 'package:course_app/utils/colors.dart';
 import 'package:course_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class FirebaseController extends ChangeNotifier {
-  FirebaseAuth instanceFriebase = FirebaseAuth.instance;
+class FirebaseController extends GetxController {
+  FirebaseAuth authInstanceFirebase = FirebaseAuth.instance;
+  FirebaseFirestore storeInstanceFirebase = FirebaseFirestore.instance;
+  CollectionReference? userStoreCollection;
+  @override
+  void onInit() async {
+    userStoreCollection = storeInstanceFirebase.collection('users');
+    loggedinUser();
+    super.onInit();
+  }
 
   var _user;
   User get getUser => _user;
+  UserModel? _userData;
+  UserModel get getUserData => _userData!;
   loggedinUser() {
     if (_user == null) {
-      instanceFriebase.idTokenChanges().listen((User? us) {
+      authInstanceFirebase.idTokenChanges().listen((User? us) async {
         if (us != null) {
           _user = us;
-          notifyListeners();
+          _userData = await getUserCollectionData(us.uid.toString());
+          update();
         }
       });
     }
@@ -23,36 +39,46 @@ class FirebaseController extends ChangeNotifier {
   }
 
   signout() async {
-    await instanceFriebase.signOut();
-    _user = instanceFriebase.currentUser;
-    notifyListeners();
+    await authInstanceFirebase.signOut();
+    _user = authInstanceFirebase.currentUser;
+    _userData = null;
+    update();
   }
 
-  bool _loginLoading = false;
-  bool get loginLoading => _loginLoading;
+  final _loginLoading = false.obs;
+  bool get loginLoading => (_loginLoading.value);
   toggleLoginLoading() {
-    _loginLoading = !_loginLoading;
-    notifyListeners();
+    _loginLoading(!_loginLoading.value);
+    update();
   }
 
-  bool _registerLoading = false;
-  bool get registerLoading => _registerLoading;
+  final _registerLoading = false.obs;
+  bool get registerLoading => (_registerLoading.value);
   toggleRegisterLoading() {
-    _registerLoading = !_registerLoading;
-    notifyListeners();
+    _registerLoading(!_registerLoading.value);
+    update();
   }
 
   createAccount(String username, String email, String password,
       BuildContext context) async {
     toggleRegisterLoading();
     try {
-      final credentials = await instanceFriebase.createUserWithEmailAndPassword(
-          email: email, password: password);
+      final credentials = await authInstanceFirebase
+          .createUserWithEmailAndPassword(email: email, password: password);
+      _userData = UserModel(
+          uid: credentials.user!.uid.toString(),
+          username: username,
+          email: email,
+          bio: "",
+          courses: []);
+      await userStoreCollection!
+          .doc(credentials.user!.uid.toString())
+          .set(_userData!.toJson());
       credentials.user!.updateDisplayName(username);
       _user = credentials.user!;
-      notifyListeners();
+      update();
       Utils.showSnackBar(
-          context, 'Account created successfully', success_color);
+          context, 'Account created successfully', primary_color);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Utils.showSnackBar(context, 'Weak password', primary_color);
@@ -69,11 +95,13 @@ class FirebaseController extends ChangeNotifier {
   loginAccount(String email, String password, BuildContext context) async {
     toggleLoginLoading();
     try {
-      final credentials = await instanceFriebase.signInWithEmailAndPassword(
+      final credentials = await authInstanceFirebase.signInWithEmailAndPassword(
           email: email, password: password);
+      _userData = await getUserCollectionData(credentials.user!.uid.toString())
+          as UserModel?;
       _user = credentials.user!;
-      notifyListeners();
-      Utils.showSnackBar(context, 'Loggedin successfully', success_color);
+      update();
+      Utils.showSnackBar(context, 'Loggedin successfully', primary_color);
     } on FirebaseAuthException catch (e) {
       Utils.showSnackBar(context, 'Invalid credential', primary_color);
     } catch (e) {
@@ -81,5 +109,37 @@ class FirebaseController extends ChangeNotifier {
     } finally {
       toggleLoginLoading();
     }
+  }
+
+  Future<UserModel> getUserCollectionData(String uid) async {
+    DocumentSnapshot snapshot = await userStoreCollection!.doc(uid).get();
+    UserModel data =
+        UserModel.fromJson(snapshot.data() as Map<String, dynamic>);
+    return data;
+  }
+
+  final _editProfileLoading = false.obs;
+  bool get editProfileLoading => (_editProfileLoading.value);
+  toggleEditProfileLoading() {
+    _editProfileLoading(!_editProfileLoading.value);
+    update();
+  }
+
+  updateUserProfile(String username, String bio, BuildContext context) async {
+    toggleEditProfileLoading();
+
+    await userStoreCollection!
+        .doc(_userData!.uid)
+        .update({"username": username, "bio": bio}).then((value) {
+      _userData!.username = username;
+      _userData!.bio = bio;
+      Utils.showSnackBar(
+          context, 'Profile updated successfully', primary_color);
+      Get.offNamed(EditProfileView.page_id);
+    }, onError: (e) {
+      Utils.showSnackBar(context, 'Error edititng profile', Colors.red);
+    });
+    update();
+    toggleEditProfileLoading();
   }
 }
