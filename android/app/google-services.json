@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "173852853477",
+    "project_id": "course-app-caa3e",
+    "storage_bucket": "course-app-caa3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173852853477:android:ad5b3570620d7796f1400c",
+        "android_client_info": {
+          "package_name": "com.example.course_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDEHSBHA_Df1j_WoOsQ1Mk9PKi9O6q4g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
