@@ -7,14 +7,12 @@ class AddCourseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(add_course_string),
-        ),
-        body: Center(
-          child: Text('add CourseView'),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(add_course_string),
+      ),
+      body: Center(
+        child: Text('add CourseView'),
       ),
     );
   }

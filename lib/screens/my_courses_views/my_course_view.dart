@@ -9,21 +9,19 @@ class MyCourseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(my_courses_string),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.toNamed(AddCourseView.page_id);
-                },
-                icon: const Icon(Icons.add_rounded))
-          ],
-        ),
-        body: Center(
-          child: Text('My CourseView'),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(my_courses_string),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.toNamed(AddCourseView.page_id);
+              },
+              icon: const Icon(Icons.add_rounded))
+        ],
+      ),
+      body: Center(
+        child: Text('My CourseView'),
       ),
     );
   }

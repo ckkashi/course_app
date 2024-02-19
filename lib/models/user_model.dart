@@ -3,6 +3,7 @@ class UserModel {
   String? username;
   String? email;
   String? bio;
+  String? photo;
   List<String>? courses;
 
   UserModel({this.uid, this.username, this.email, this.bio, this.courses});
@@ -12,6 +13,7 @@ class UserModel {
     username = json['username'];
     email = json['email'];
     bio = json['bio'];
+    photo = json['photo'];
     courses = json['courses'].cast<String>();
   }
 
@@ -21,6 +23,7 @@ class UserModel {
     data['username'] = this.username;
     data['email'] = this.email;
     data['bio'] = this.bio;
+    data['photo'] = this.photo;
     data['courses'] = this.courses;
     return data;
   }

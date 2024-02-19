@@ -14,46 +14,67 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 10.0, left: 8.0, right: 8.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              ListTile(
-                title: Text(firebase_controller.getUserData.username!
-                    .toString()
-                    .toUpperCase()),
-                subtitle:
-                    Text(firebase_controller.getUserData.email!.toString()),
+      body: firebase_controller.getDataLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(top: 10.0, left: 8.0, right: 8.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        title: Text(firebase_controller.getUserData.username
+                            .toString()
+                            .toUpperCase()),
+                        subtitle: Text(
+                            firebase_controller.getUserData.email.toString()),
+                        trailing:
+                            firebase_controller.getUserData.photo.toString() !=
+                                    "null"
+                                ? CircleAvatar(
+                                    backgroundColor: primary_color,
+                                    radius: 25,
+                                    backgroundImage: NetworkImage(
+                                        firebase_controller.getUserData.photo
+                                            .toString()),
+                                  )
+                                : Container(
+                                    width: 0,
+                                    height: 0,
+                                  ),
+                      ),
+                      ProfileTab(
+                          title: edit_profile_string,
+                          icon: Icons.edit,
+                          onTap: () {
+                            Get.toNamed(EditProfileView.page_id);
+                          }),
+                      ProfileTab(
+                          title: my_courses_string,
+                          icon: Icons.book,
+                          onTap: () {
+                            // Get.to(() => const MyCourseView(),
+                            //     transition: Transition.circularReveal,
+                            //     );
+                            Get.toNamed(
+                              MyCourseView.page_id,
+                            );
+                          }),
+                      ProfileTab(
+                          title: logout_string,
+                          icon: Icons.logout,
+                          onTap: () {
+                            firebase_controller.signout();
+                          }),
+                    ],
+                  ),
+                ),
               ),
-              ProfileTab(
-                  title: edit_profile_string,
-                  icon: Icons.edit,
-                  onTap: () {
-                    Get.toNamed(EditProfileView.page_id);
-                  }),
-              ProfileTab(
-                  title: my_courses_string,
-                  icon: Icons.book,
-                  onTap: () {
-                    // Get.to(() => const MyCourseView(),
-                    //     transition: Transition.circularReveal,
-                    //     );
-                    Get.toNamed(
-                      MyCourseView.page_id,
-                    );
-                  }),
-              ProfileTab(
-                  title: logout_string,
-                  icon: Icons.logout,
-                  onTap: () {
-                    firebase_controller.signout();
-                  }),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
