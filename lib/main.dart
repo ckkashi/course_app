@@ -4,6 +4,7 @@ import 'package:course_app/screens/home_screen.dart';
 import 'package:course_app/screens/my_courses_views/add_course_view.dart';
 import 'package:course_app/screens/my_courses_views/my_course_view.dart';
 import 'package:course_app/utils/colors.dart';
+import 'package:course_app/utils/routes.dart';
 import 'package:course_app/utils/strings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
           scaffoldBackgroundColor: bg_color),
       initialRoute: HomeScreen.page_id,
-      routes: {
-        HomeScreen.page_id: (context) => const HomeScreen(),
-        EditProfileView.page_id: (context) => EditProfileView(),
-        MyCourseView.page_id: (context) => const MyCourseView(),
-        AddCourseView.page_id: (context) => const AddCourseView(),
-      },
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }

@@ -9,3 +9,4 @@ const String edit_profile_string = 'Edit profile';
 const String logout_string = 'Logout';
 
 const String add_course_string = 'Add course';
+const String edit_course_string = 'Edit course';

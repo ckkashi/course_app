@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:course_app/models/user_model.dart';
 import 'package:course_app/screens/auth_views/edit_profile_view.dart';
+import 'package:course_app/screens/auth_views/profile_view.dart';
 import 'package:course_app/utils/colors.dart';
 import 'package:course_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -164,9 +165,10 @@ class FirebaseController extends GetxController {
         (value) {
       _userData.username = username;
       _userData.bio = bio;
+      clearPicture();
+      Navigator.pop(context);
       Utils.showSnackBar(
           context, 'Profile updated successfully', primary_color);
-      Get.offNamed(EditProfileView.page_id);
     }, onError: (e) {
       Utils.showSnackBar(context, 'Error edititng profile', Colors.red);
     });
@@ -193,8 +195,8 @@ class FirebaseController extends GetxController {
         pickedProfile = result!.files.first;
         profileName = pickedProfile!.name;
         update();
-        print(pickedProfile!.path);
-        print(profileName);
+        // print(pickedProfile!.path);
+        // print(profileName);
       }
     } catch (e) {
       log(e.toString());
