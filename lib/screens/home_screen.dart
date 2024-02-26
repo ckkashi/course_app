@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:course_app/controllers/course_controller.dart';
 import 'package:course_app/controllers/firebase_controller.dart';
 import 'package:course_app/controllers/home_screen_controller.dart';
 import 'package:course_app/screens/navigations_views/account_nav_view.dart';
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final home_controller = Get.put(HomeScreenController());
   final firebase_controller = Get.put(FirebaseController());
+  final course_controller = Get.put(CourseController());
 
   @override
   Widget build(BuildContext context) {

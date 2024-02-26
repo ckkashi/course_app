@@ -15,7 +15,7 @@ class Routes {
       case MyCourseView.page_id:
         return MaterialPageRoute(builder: (_) => const MyCourseView());
       case AddCourseView.page_id:
-        return MaterialPageRoute(builder: (_) => const AddCourseView());
+        return MaterialPageRoute(builder: (_) => AddCourseView());
 
       default:
         return MaterialPageRoute(
