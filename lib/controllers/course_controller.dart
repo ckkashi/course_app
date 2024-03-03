@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:course_app/controllers/firebase_controller.dart';
 import 'package:course_app/models/course_model.dart';
+import 'package:course_app/models/user_model.dart';
 import 'package:course_app/utils/colors.dart';
 import 'package:course_app/utils/utils.dart';
 import 'package:file_picker/file_picker.dart';
@@ -271,11 +272,42 @@ class CourseController extends GetxController {
     }
   }
 
-  getUserEnrolledCourses() async {}
+  enrollCourse() async {}
+
+  getUserEnrolledCourses() async {
+    Map<String, dynamic> userEnrolledCoursesList = {};
+    final enrolledCoursesList = fbController.getUserData.courses;
+    final keys = coursesList.keys.toList();
+    for (var courseId in enrolledCoursesList!) {
+      if (keys.contains(courseId)) {
+        userEnrolledCoursesList[courseId] = coursesList[courseId];
+      }
+    }
+    return userEnrolledCoursesList;
+  }
+
+  bool checkUserEnrolled(String courseId) {
+    bool exist = false;
+    print(courseId);
+    var enrolledCoursesList = fbController.getUserData.courses;
+    if (enrolledCoursesList == null || enrolledCoursesList == []) {
+      exist = false;
+    } else {
+      exist = enrolledCoursesList.contains(courseId);
+    }
+    return exist;
+  }
+
+  Future<UserModel> getUploadedCourseUser(String userId) async {
+    DocumentSnapshot userSnap =
+        await firestoreInstanceFirebase.collection('users').doc(userId).get();
+    UserModel findUser =
+        UserModel.fromJson(userSnap.data() as Map<String, dynamic>);
+    print(findUser);
+    return findUser;
+  }
 
   getUserLikeCourses() async {}
-
-  enrollCourse() async {}
 
   likeCourse() async {}
 

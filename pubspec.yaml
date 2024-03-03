@@ -41,6 +41,7 @@ dependencies:
   firebase_storage: ^11.6.5
   get: ^4.6.6
   file_picker: ^6.1.1
+  video_player: ^2.8.2
   
 
 dev_dependencies:

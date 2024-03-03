@@ -1,4 +1,6 @@
+import 'package:course_app/models/course_model.dart';
 import 'package:course_app/screens/auth_views/edit_profile_view.dart';
+import 'package:course_app/screens/courses_views/course_view.dart';
 import 'package:course_app/screens/courses_views/specific_cat_courses.dart';
 import 'package:course_app/screens/home_screen.dart';
 import 'package:course_app/screens/my_courses_views/add_course_view.dart';
@@ -20,6 +22,11 @@ class Routes {
       case SpecificCategoryCourses.page_id:
         return MaterialPageRoute(
             builder: (_) => SpecificCategoryCourses(
+                  args: args,
+                ));
+      case CourseView.page_id:
+        return MaterialPageRoute(
+            builder: (_) => CourseView(
                   args: args,
                 ));
 
