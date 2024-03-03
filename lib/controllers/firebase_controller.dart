@@ -3,6 +3,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:course_app/controllers/course_controller.dart';
 import 'package:course_app/models/user_model.dart';
 import 'package:course_app/screens/auth_views/edit_profile_view.dart';
 import 'package:course_app/screens/auth_views/profile_view.dart';
@@ -83,11 +84,13 @@ class FirebaseController extends GetxController {
       final credentials = await authInstanceFirebase
           .createUserWithEmailAndPassword(email: email, password: password);
       _userData = UserModel(
-          uid: credentials.user!.uid.toString(),
-          username: username,
-          email: email,
-          bio: "",
-          courses: []);
+        uid: credentials.user!.uid.toString(),
+        username: username,
+        email: email,
+        bio: "",
+        courses: [],
+        like_courses: [],
+      );
       await userStoreCollection!
           .doc(credentials.user!.uid.toString())
           .set(_userData!.toJson());

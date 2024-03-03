@@ -35,35 +35,41 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            app_name_string,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Obx(() {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              app_name_string,
+            ),
+            automaticallyImplyLeading: false,
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.explore_outlined), label: 'Explore'),
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.book), label: 'Learn'),
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person), label: 'Account'),
-          ],
-          currentIndex: home_controller.selectedIndex,
-          onTap: (val) => home_controller.chngSelectedIndex(val),
-        ),
-        body: SafeArea(
-            child: IndexedStack(
-          index: home_controller.selectedIndex,
-          children: [
-            const ExploreNavView(),
-            const LearnNavView(),
-            AccountNavView(),
-          ],
-        )),
-      );
-    });
+          bottomNavigationBar: BottomNavigationBar(
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.explore_outlined), label: 'Explore'),
+              BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.book), label: 'Learn'),
+              BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.person), label: 'Account'),
+            ],
+            currentIndex: home_controller.selectedIndex,
+            onTap: (val) => home_controller.chngSelectedIndex(val),
+          ),
+          body: SafeArea(
+              child: IndexedStack(
+            index: home_controller.selectedIndex,
+            children: [
+              ExploreNavView(),
+              const LearnNavView(),
+              AccountNavView(),
+            ],
+          )),
+        );
+      }),
+    );
   }
 }

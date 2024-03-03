@@ -1,0 +1,9 @@
+registration of the user.
+login the user.
+update the user profile.
+
+individual user doc contains:
+username,
+bio,
+photo,
+enrolled courses.

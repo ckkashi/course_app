@@ -13,20 +13,23 @@ class FormTextArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      focusNode: focus,
-      maxLines:
-          6, // any number you need (It works as the rows for the textarea)
-      keyboardType: TextInputType.multiline,
-      // maxLines: null,
-      decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          label: Text(title)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        focusNode: focus,
+        maxLines:
+            6, // any number you need (It works as the rows for the textarea)
+        keyboardType: TextInputType.multiline,
+        // maxLines: null,
+        decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            label: Text(title)),
+      ),
     );
   }
 }

@@ -9,6 +9,8 @@ class CourseModel {
   String? category;
   String? language;
   int? likes;
+  String? approved;
+  String? addedby;
   String? addedat;
   String? updatedat;
 
@@ -23,6 +25,8 @@ class CourseModel {
       this.category,
       this.language,
       this.likes,
+      this.approved,
+      this.addedby,
       this.addedat,
       this.updatedat});
 
@@ -37,6 +41,8 @@ class CourseModel {
     category = json['category'];
     language = json['language'];
     likes = json['likes'];
+    approved = json['approved'];
+    addedby = json['addedby'];
     addedat = json['addedat'];
     updatedat = json['updatedat'];
   }
@@ -53,6 +59,8 @@ class CourseModel {
     data['category'] = this.category;
     data['language'] = this.language;
     data['likes'] = this.likes;
+    data['approved'] = this.approved;
+    data['addedby'] = this.addedby;
     data['addedat'] = this.addedat;
     data['updatedat'] = this.updatedat;
     return data;

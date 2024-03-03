@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       title: app_name_string,
       theme: ThemeData(
           primarySwatch: primary_color,
+          colorScheme: ColorScheme.fromSeed(seedColor: primary_color),
           appBarTheme: AppBarTheme(
             elevation: 0,
             centerTitle: true,
