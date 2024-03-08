@@ -1,7 +1,5 @@
 import 'package:course_app/controllers/course_controller.dart';
 import 'package:course_app/controllers/course_view_controller.dart';
-import 'package:course_app/models/course_model.dart';
-import 'package:course_app/models/user_model.dart';
 import 'package:course_app/screens/widgets/round_button.dart';
 import 'package:course_app/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +42,22 @@ class _CourseViewState extends State<CourseView> {
             ),
             bottomNavigationBar:
                 controller.checkUserEnrolled(widget.args['courseId'])
-                    ? Container()
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RoundButton(
+                            title: 'Already enrolled',
+                            onPressed: () {},
+                            loading: false),
+                      )
                     : Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: RoundButton(
-                            title: 'Enroll', onPressed: () {}, loading: false),
+                            title: 'Enroll',
+                            onPressed: () {
+                              controller.enrollCourse(
+                                  context, widget.args['courseId']);
+                            },
+                            loading: false),
                       ),
             body: SingleChildScrollView(
               child: Column(
@@ -72,55 +81,64 @@ class _CourseViewState extends State<CourseView> {
                           color: primary_color, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Heading('Video', textTheme),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: FutureBuilder(
-                      future: courseViewController
-                          .init(widget.args['courseData'].videos[0]),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        }
-                        return Column(
-                          children: [
-                            AspectRatio(
-                              aspectRatio: courseViewController
-                                  .controller.value.aspectRatio,
-                              // Use the VideoPlayer widget to display the video.
-                              child:
-                                  VideoPlayer(courseViewController.controller),
-                            ),
-                            Container(
-                              height: 50,
-                              color: Colors.black,
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        courseViewController.controller.play();
-                                        courseViewController.update();
-                                      },
-                                      icon: Icon(
-                                        Icons.play_arrow,
-                                        color: Colors.white,
-                                      )),
-                                  IconButton(
-                                      onPressed: () {
-                                        courseViewController.controller.pause();
-                                        courseViewController.update();
-                                      },
-                                      icon: Icon(
-                                        Icons.pause,
-                                        color: Colors.white,
-                                      )),
-                                ],
+                  Visibility(
+                      visible:
+                          controller.checkUserEnrolled(widget.args['courseId']),
+                      child: Heading('Video', textTheme)),
+                  Visibility(
+                    visible:
+                        controller.checkUserEnrolled(widget.args['courseId']),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: FutureBuilder(
+                        future: courseViewController
+                            .init(widget.args['courseData'].videos[0]),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          return Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: courseViewController
+                                    .controller.value.aspectRatio,
+                                // Use the VideoPlayer widget to display the video.
+                                child: VideoPlayer(
+                                    courseViewController.controller),
                               ),
-                            )
-                          ],
-                        );
-                      },
+                              Container(
+                                height: 50,
+                                color: Colors.black,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          courseViewController.controller
+                                              .play();
+                                          courseViewController.update();
+                                        },
+                                        icon: Icon(
+                                          Icons.play_arrow,
+                                          color: Colors.white,
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          courseViewController.controller
+                                              .pause();
+                                          courseViewController.update();
+                                        },
+                                        icon: Icon(
+                                          Icons.pause,
+                                          color: Colors.white,
+                                        )),
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Heading('Description', textTheme),

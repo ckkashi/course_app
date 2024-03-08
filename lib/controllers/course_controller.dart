@@ -272,7 +272,16 @@ class CourseController extends GetxController {
     }
   }
 
-  enrollCourse() async {}
+  enrollCourse(BuildContext context, String courseId) async {
+    String userId = fbController.getUserData.uid.toString();
+    await firestoreInstanceFirebase.collection('users').doc(userId).update({
+      "courses": FieldValue.arrayUnion([courseId])
+    });
+    fbController.userData.courses!.add(courseId);
+    fbController.update();
+    Navigator.of(context);
+    Utils.showSnackBar(context, 'Course enrolled successfully', primary_color);
+  }
 
   getUserEnrolledCourses() async {
     Map<String, dynamic> userEnrolledCoursesList = {};
@@ -307,9 +316,63 @@ class CourseController extends GetxController {
     return findUser;
   }
 
-  getUserLikeCourses() async {}
+  getUserLikeCourses(String courseId) async {
+    Map<String, dynamic> userLikedCoursesList = {};
+    final likedCoursesList = fbController.getUserData.courses;
+    final keys = coursesList.keys.toList();
+    for (var courseId in likedCoursesList!) {
+      if (keys.contains(courseId)) {
+        userLikedCoursesList[courseId] = coursesList[courseId];
+      }
+    }
+    return userLikedCoursesList;
+  }
 
-  likeCourse() async {}
+  likeCourse(BuildContext context, String courseId) async {
+    String userId = fbController.getUserData.uid.toString();
+    await firestoreInstanceFirebase.collection('users').doc(userId).update({
+      "like_courses": FieldValue.arrayUnion([courseId])
+    });
+    DocumentSnapshot current_course_snap =
+        await courseCollection.doc(courseId).get();
+    await firestoreInstanceFirebase
+        .collection('courses')
+        .doc(courseId)
+        .update({"likes": current_course_snap['likes'] + 1});
+    fbController.userData.like_courses!.add(courseId);
+    fbController.update();
+    Navigator.of(context);
+    Utils.showSnackBar(context, 'You liked that course', primary_color);
+  }
+
+  dislikeCourse(BuildContext context, String courseId) async {
+    String userId = fbController.getUserData.uid.toString();
+    await firestoreInstanceFirebase.collection('users').doc(userId).update({
+      "like_courses": FieldValue.arrayRemove([courseId])
+    });
+    DocumentSnapshot current_course_snap =
+        await courseCollection.doc(courseId).get();
+    await firestoreInstanceFirebase
+        .collection('courses')
+        .doc(courseId)
+        .update({"likes": current_course_snap['likes'] - 1});
+    fbController.userData.like_courses!.remove(courseId);
+    fbController.update();
+    Navigator.of(context);
+    Utils.showSnackBar(context, 'You disliked that course', error_color);
+  }
+
+  bool checkUserLiked(String courseId) {
+    bool liked = false;
+    print(courseId);
+    var likedCoursesList = fbController.getUserData.like_courses;
+    if (likedCoursesList == null || likedCoursesList == []) {
+      liked = false;
+    } else {
+      liked = likedCoursesList.contains(courseId);
+    }
+    return liked;
+  }
 
   clearUserData() {
     userUploadedCoursesList.clear();

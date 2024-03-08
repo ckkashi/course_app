@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             index: home_controller.selectedIndex,
             children: [
               ExploreNavView(),
-              const LearnNavView(),
+              LearnNavView(),
               AccountNavView(),
             ],
           )),

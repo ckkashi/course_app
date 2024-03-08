@@ -1,5 +1,6 @@
 import 'package:course_app/controllers/course_controller.dart';
 import 'package:course_app/models/course_model.dart';
+import 'package:course_app/screens/courses_views/course_view.dart';
 import 'package:course_app/screens/widgets/course_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,7 +43,16 @@ class SpecificCategoryCourses extends StatelessWidget {
                     dynamic keys = snapshot.data.keys.toList();
                     CourseModel courseData = snapshot.data[keys[index]];
                     print('data: ${courseData}');
-                    return CourseContainer(courseData: courseData);
+                    return GestureDetector(
+                        onTap: () {
+                          dynamic args = {
+                            "courseData": courseData,
+                            "courseId": keys[index]
+                          };
+                          Navigator.pushNamed(context, CourseView.page_id,
+                              arguments: args);
+                        },
+                        child: CourseContainer(courseData: courseData));
                   });
             }
           }),

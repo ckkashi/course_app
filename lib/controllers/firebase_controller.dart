@@ -38,16 +38,16 @@ class FirebaseController extends GetxController {
 
   var _user;
   User get getUser => _user;
-  UserModel _userData = UserModel();
-  UserModel get getUserData => _userData;
+  UserModel userData = UserModel();
+  UserModel get getUserData => userData;
   loggedinUser() {
     // toggleGetDataLoading();
     if (_user == null) {
       authInstanceFirebase.idTokenChanges().listen((User? us) async {
         if (us != null) {
           _user = us;
-          _userData = await getUserCollectionData(us.uid.toString());
-          print(_userData.bio);
+          userData = await getUserCollectionData(us.uid.toString());
+          print(userData.bio);
           update();
         }
       });
@@ -59,7 +59,7 @@ class FirebaseController extends GetxController {
   signout() async {
     await authInstanceFirebase.signOut();
     _user = authInstanceFirebase.currentUser;
-    _userData = UserModel();
+    userData = UserModel();
     update();
   }
 
@@ -83,7 +83,7 @@ class FirebaseController extends GetxController {
     try {
       final credentials = await authInstanceFirebase
           .createUserWithEmailAndPassword(email: email, password: password);
-      _userData = UserModel(
+      userData = UserModel(
         uid: credentials.user!.uid.toString(),
         username: username,
         email: email,
@@ -93,7 +93,7 @@ class FirebaseController extends GetxController {
       );
       await userStoreCollection!
           .doc(credentials.user!.uid.toString())
-          .set(_userData!.toJson());
+          .set(userData!.toJson());
       credentials.user!.updateDisplayName(username);
       _user = credentials.user!;
       update();
@@ -117,7 +117,7 @@ class FirebaseController extends GetxController {
     try {
       final credentials = await authInstanceFirebase.signInWithEmailAndPassword(
           email: email, password: password);
-      _userData = await getUserCollectionData(credentials.user!.uid.toString());
+      userData = await getUserCollectionData(credentials.user!.uid.toString());
       _user = credentials.user!;
       update();
       Utils.showSnackBar(context, 'Loggedin successfully', primary_color);
@@ -161,13 +161,13 @@ class FirebaseController extends GetxController {
     if (pickedProfile != null) {
       String? url = await uploadProfile();
       updateProfileMap['photo'] = url!;
-      _userData.photo = url;
+      userData.photo = url;
     }
     print(updateProfileMap);
-    await userStoreCollection!.doc(_userData.uid).update(updateProfileMap).then(
+    await userStoreCollection!.doc(userData.uid).update(updateProfileMap).then(
         (value) {
-      _userData.username = username;
-      _userData.bio = bio;
+      userData.username = username;
+      userData.bio = bio;
       clearPicture();
       Navigator.pop(context);
       Utils.showSnackBar(
