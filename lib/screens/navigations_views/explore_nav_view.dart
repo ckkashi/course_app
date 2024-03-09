@@ -53,6 +53,76 @@ class ExploreNavView extends StatelessWidget {
               },
             ),
           ),
+          Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Most liked course',
+                style: TextStyle(
+                    color: primary_color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+            ],
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 200,
+            child: FutureBuilder(
+                future: courseController.getMostLikedCourses(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text('No courses found'),
+                    );
+                  } else {
+                    return ListView.builder(
+                        // shrinkWrap: true,
+                        // physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          dynamic keys = snapshot.data.keys.toList();
+                          CourseModel courseData = snapshot.data[keys[index]];
+                          print('data: ${courseData}');
+                          return GestureDetector(
+                              onTap: () {
+                                dynamic args = {
+                                  "courseData": courseData,
+                                  "courseId": keys[index]
+                                };
+                                Navigator.pushNamed(context, CourseView.page_id,
+                                    arguments: args);
+                              },
+                              child: Container(
+                                  width: 250,
+                                  height: double.infinity,
+                                  child:
+                                      CourseContainer(courseData: courseData)));
+                        });
+                  }
+                }),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'All courses',
+                style: TextStyle(
+                    color: primary_color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+            ],
+          ),
           FutureBuilder(
               future: courseController.getAllCourses(),
               builder: (context, AsyncSnapshot snapshot) {

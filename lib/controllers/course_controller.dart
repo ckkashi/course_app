@@ -223,6 +223,7 @@ class CourseController extends GetxController {
   }
 
   Map<String, dynamic> coursesList = {};
+  Map<String, dynamic> likedCoursesList = {};
 
   Map<String, dynamic> userUploadedCoursesList = {};
 
@@ -235,6 +236,24 @@ class CourseController extends GetxController {
       }
       print(coursesList);
       return coursesList;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getMostLikedCourses() async {
+    try {
+      QuerySnapshot courses = await courseCollection
+          .orderBy("likes", descending: true)
+          .where("likes", isNotEqualTo: 0)
+          .limit(3)
+          .get();
+      for (var currentCourse in courses.docs) {
+        likedCoursesList[currentCourse.id] =
+            CourseModel.fromJson(currentCourse.data() as Map<String, dynamic>);
+      }
+      print(likedCoursesList);
+      return likedCoursesList;
     } catch (e) {
       print(e);
     }
@@ -316,9 +335,9 @@ class CourseController extends GetxController {
     return findUser;
   }
 
-  getUserLikeCourses(String courseId) async {
+  getUserLikeCourses() async {
     Map<String, dynamic> userLikedCoursesList = {};
-    final likedCoursesList = fbController.getUserData.courses;
+    final likedCoursesList = fbController.getUserData.like_courses;
     final keys = coursesList.keys.toList();
     for (var courseId in likedCoursesList!) {
       if (keys.contains(courseId)) {
@@ -326,6 +345,14 @@ class CourseController extends GetxController {
       }
     }
     return userLikedCoursesList;
+  }
+
+  applyCourseLike(BuildContext context, String courseId) async {
+    if (checkUserLiked(courseId)) {
+      dislikeCourse(context, courseId);
+    } else {
+      likeCourse(context, courseId);
+    }
   }
 
   likeCourse(BuildContext context, String courseId) async {
@@ -341,6 +368,7 @@ class CourseController extends GetxController {
         .update({"likes": current_course_snap['likes'] + 1});
     fbController.userData.like_courses!.add(courseId);
     fbController.update();
+    Navigator.of(context);
     Navigator.of(context);
     Utils.showSnackBar(context, 'You liked that course', primary_color);
   }
@@ -360,6 +388,7 @@ class CourseController extends GetxController {
     fbController.update();
     Navigator.of(context);
     Utils.showSnackBar(context, 'You disliked that course', error_color);
+    Navigator.of(context);
   }
 
   bool checkUserLiked(String courseId) {

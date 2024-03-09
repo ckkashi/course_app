@@ -75,10 +75,28 @@ class _CourseViewState extends State<CourseView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5, left: 5),
-                    child: Text(
-                      widget.args['courseData'].title.toString(),
-                      style: textTheme.titleLarge!.copyWith(
-                          color: primary_color, fontWeight: FontWeight.bold),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.args['courseData'].title.toString(),
+                          style: textTheme.titleLarge!.copyWith(
+                              color: primary_color,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              controller.applyCourseLike(
+                                  context, widget.args['courseId']);
+                            },
+                            icon: Icon(
+                              Icons.favorite,
+                              color: controller
+                                      .checkUserLiked(widget.args['courseId'])
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ))
+                      ],
                     ),
                   ),
                   Visibility(

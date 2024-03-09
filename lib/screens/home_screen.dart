@@ -6,6 +6,7 @@ import 'package:course_app/controllers/home_screen_controller.dart';
 import 'package:course_app/screens/navigations_views/account_nav_view.dart';
 import 'package:course_app/screens/navigations_views/explore_nav_view.dart';
 import 'package:course_app/screens/navigations_views/learn_nav_view.dart';
+import 'package:course_app/screens/navigations_views/like_nav_view.dart';
 import 'package:course_app/utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.book), label: 'Learn'),
               BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.heart), label: 'Fav'),
+              BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.person), label: 'Account'),
             ],
             currentIndex: home_controller.selectedIndex,
@@ -65,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               ExploreNavView(),
               LearnNavView(),
-              AccountNavView(),
+              LikeNavView(),
+              AccountNavView()
             ],
           )),
         );
