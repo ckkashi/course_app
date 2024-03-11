@@ -69,7 +69,7 @@ class ExploreNavView extends StatelessWidget {
           ),
           SizedBox(
             width: double.infinity,
-            height: 200,
+            height: 210,
             child: FutureBuilder(
                 future: courseController.getMostLikedCourses(),
                 builder: (context, AsyncSnapshot snapshot) {
@@ -141,7 +141,7 @@ class ExploreNavView extends StatelessWidget {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        mainAxisExtent: 200,
+                        mainAxisExtent: 210,
                       ),
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {

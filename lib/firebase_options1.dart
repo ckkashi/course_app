@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart'
 /// // ...
 /// await Firebase.initializeApp(
 ///   options: DefaultFirebaseOptions.currentPlatform,
-/// );was
+/// );007
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -44,38 +47,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB-SojE0D-qQq5TutMODdCFyk5-1OgbLM4',
-    appId: '1:732685685752:web:df01e6cc1eea4b063afc0d',
-    messagingSenderId: '732685685752',
-    projectId: 'code-kindle',
-    authDomain: 'code-kindle.firebaseapp.com',
-    storageBucket: 'code-kindle.appspot.com',
-    measurementId: 'G-1JEXB24TF7',
+    apiKey: 'AIzaSyBp4wHeixLVYCQ84hu0roHOmCdtDz2l480',
+    appId: '1:173852853477:web:8178bb16078e2928f1400c',
+    messagingSenderId: '173852853477',
+    projectId: 'course-app-caa3e',
+    authDomain: 'course-app-caa3e.firebaseapp.com',
+    storageBucket: 'course-app-caa3e.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBOWZDJuiSEkkSjfBPbmp19PVG3Vpf_SBM',
-    appId: '1:732685685752:android:2a8f3c9ea1a8bc9e3afc0d',
-    messagingSenderId: '732685685752',
-    projectId: 'code-kindle',
-    storageBucket: 'code-kindle.appspot.com',
+    apiKey: 'AIzaSyDDEHSBHA_Df1j_WoOsQ1Mk9PKi9O6q4g4',
+    appId: '1:173852853477:android:ad5b3570620d7796f1400c',
+    messagingSenderId: '173852853477',
+    projectId: 'course-app-caa3e',
+    storageBucket: 'course-app-caa3e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC4yz5WrIWJ4Vv03eZvyZV4JcdlTyHzxPg',
-    appId: '1:732685685752:ios:3683b021ec5a20a73afc0d',
-    messagingSenderId: '732685685752',
-    projectId: 'code-kindle',
-    storageBucket: 'code-kindle.appspot.com',
-    iosBundleId: 'com.example.project',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC4yz5WrIWJ4Vv03eZvyZV4JcdlTyHzxPg',
-    appId: '1:732685685752:ios:dd11541ab95acab63afc0d',
-    messagingSenderId: '732685685752',
-    projectId: 'code-kindle',
-    storageBucket: 'code-kindle.appspot.com',
-    iosBundleId: 'com.example.project.RunnerTests',
+    apiKey: 'AIzaSyDPKn6Y4efj21f0Rfwss0wFf6Xec-bcDuk',
+    appId: '1:173852853477:ios:3fc1db402cd93c2df1400c',
+    messagingSenderId: '173852853477',
+    projectId: 'course-app-caa3e',
+    storageBucket: 'course-app-caa3e.appspot.com',
+    iosBundleId: 'com.example.courseApp',
   );
 }

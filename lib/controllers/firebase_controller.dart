@@ -3,10 +3,8 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:course_app/controllers/course_controller.dart';
 import 'package:course_app/models/user_model.dart';
-import 'package:course_app/screens/auth_views/edit_profile_view.dart';
-import 'package:course_app/screens/auth_views/profile_view.dart';
+
 import 'package:course_app/utils/colors.dart';
 import 'package:course_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +44,7 @@ class FirebaseController extends GetxController {
       authInstanceFirebase.idTokenChanges().listen((User? us) async {
         if (us != null) {
           _user = us;
+          log(us.uid.toString());
           userData = await getUserCollectionData(us.uid.toString());
           print(userData.bio);
           update();
@@ -133,6 +132,7 @@ class FirebaseController extends GetxController {
 
   Future<UserModel> getUserCollectionData(String uid) async {
     DocumentSnapshot snapshot = await userStoreCollection!.doc(uid).get();
+    log(snapshot.data().toString());
     UserModel data =
         UserModel.fromJson(snapshot.data() as Map<String, dynamic>);
     return data;

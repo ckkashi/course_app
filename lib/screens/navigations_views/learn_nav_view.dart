@@ -24,33 +24,38 @@ class LearnNavView extends StatelessWidget {
                   );
                 } else if (!snapshot.hasData) {
                   return const Center(
-                    child: Text('No courses found'),
+                    child: Text('user not loggedin'),
                   );
                 } else {
-                  return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisExtent: 200,
-                      ),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        dynamic keys = snapshot.data.keys.toList();
-                        CourseModel courseData = snapshot.data[keys[index]];
-                        print('data: ${courseData}');
-                        return GestureDetector(
-                            onTap: () {
-                              dynamic args = {
-                                "courseData": courseData,
-                                "courseId": keys[index]
-                              };
-                              Navigator.pushNamed(context, CourseView.page_id,
-                                  arguments: args);
-                            },
-                            child: CourseContainer(courseData: courseData));
-                      });
+                  return snapshot.data.length == 0
+                      ? Center(
+                          child: Text('No enrolled courses found'),
+                        )
+                      : GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisExtent: 210,
+                          ),
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            dynamic keys = snapshot.data.keys.toList();
+                            CourseModel courseData = snapshot.data[keys[index]];
+                            print('data: ${courseData}');
+                            return GestureDetector(
+                                onTap: () {
+                                  dynamic args = {
+                                    "courseData": courseData,
+                                    "courseId": keys[index]
+                                  };
+                                  Navigator.pushNamed(
+                                      context, CourseView.page_id,
+                                      arguments: args);
+                                },
+                                child: CourseContainer(courseData: courseData));
+                          });
                 }
               }),
         ],

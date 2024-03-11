@@ -260,6 +260,7 @@ class CourseController extends GetxController {
   }
 
   getUserUploadedCourses() async {
+    userUploadedCoursesList.clear();
     try {
       QuerySnapshot courses = await courseCollection
           .where("addedby", isEqualTo: fbController.getUserData.uid)
@@ -292,14 +293,19 @@ class CourseController extends GetxController {
   }
 
   enrollCourse(BuildContext context, String courseId) async {
-    String userId = fbController.getUserData.uid.toString();
-    await firestoreInstanceFirebase.collection('users').doc(userId).update({
-      "courses": FieldValue.arrayUnion([courseId])
-    });
-    fbController.userData.courses!.add(courseId);
-    fbController.update();
-    Navigator.of(context);
-    Utils.showSnackBar(context, 'Course enrolled successfully', primary_color);
+    try {
+      String userId = fbController.getUserData.uid.toString();
+      await firestoreInstanceFirebase.collection('users').doc(userId).update({
+        "courses": FieldValue.arrayUnion([courseId])
+      });
+      fbController.userData.courses!.add(courseId);
+      fbController.update();
+      Navigator.of(context);
+      Utils.showSnackBar(
+          context, 'Course enrolled successfully', primary_color);
+    } catch (e) {
+      Utils.showSnackBar(context, 'User not loggedin', error_color);
+    }
   }
 
   getUserEnrolledCourses() async {

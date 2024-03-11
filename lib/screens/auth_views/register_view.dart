@@ -17,9 +17,9 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final usernameController = TextEditingController(text: 'ckkashi');
-  final emailController = TextEditingController(text: 'ckkashi007@gmail.com');
-  final passwordController = TextEditingController(text: '42372Kash43');
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   FocusNode usernameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode passFocus = FocusNode();

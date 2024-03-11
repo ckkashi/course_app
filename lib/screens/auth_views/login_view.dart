@@ -17,8 +17,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final emailController = TextEditingController(text: 'ckkashi007@gmail.com');
-  final passwordController = TextEditingController(text: '42372Kash43');
+  final emailController = TextEditingController(text: '');
+  final passwordController = TextEditingController(text: '');
   FocusNode emailFocus = FocusNode();
   FocusNode passFocus = FocusNode();
   final firebase_controller = Get.find<FirebaseController>();

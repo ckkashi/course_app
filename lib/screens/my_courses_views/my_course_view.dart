@@ -20,9 +20,14 @@ class MyCourseView extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
+                courseController.getUserUploadedCourses();
+              },
+              icon: const Icon(Icons.refresh)),
+          IconButton(
+              onPressed: () {
                 Get.toNamed(AddCourseView.page_id);
               },
-              icon: const Icon(Icons.add_rounded))
+              icon: const Icon(Icons.add_rounded)),
         ],
       ),
       body: FutureBuilder(
@@ -42,7 +47,7 @@ class MyCourseView extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisExtent: 200,
+                    mainAxisExtent: 210,
                   ),
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {

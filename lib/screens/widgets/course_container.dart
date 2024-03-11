@@ -65,6 +65,24 @@ class CourseContainer extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelMedium!,
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 1, left: 6),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.thumb_up,
+                    size: 14,
+                  ),
+                  Text(
+                    ' ${courseData.likes.toString()}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.ltr,
+                    style: Theme.of(context).textTheme.labelMedium!,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
